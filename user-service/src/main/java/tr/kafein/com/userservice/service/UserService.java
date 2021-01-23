@@ -36,7 +36,7 @@ public class UserService {
         user.setName("name");
         user.setSurname("surname");
         if(getByUsername(user.getUsername()) == null) {
-            userRepository.save(user);
+            save(user);
         }
     }
 }
