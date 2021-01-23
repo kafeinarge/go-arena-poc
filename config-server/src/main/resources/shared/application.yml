@@ -1,0 +1,77 @@
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"
+  level:
+    org.hibernate.SQL: 'off'
+    ROOT: 'info'
+
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+    leaseRenewalIntervalInSeconds: 2
+    leaseExpirationDurationInSeconds: 5
+    prefer-ip-address: true
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://${EUREKA_USERNAME:user}:${EUREKA_PASSWORD:12345}@localhost:8765/eureka/
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+
+security:
+  sessions: stateless
+  enable-csrf: false
+  ignored: /css/**,/js/**,/favicon.ico,/webjars/**,swagger-ui.html, /swagger-resources/**
+  basic:
+    enabled: false
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:9999/uaa/user
+      prefer-token-info: false
+    client:
+      client-id: ${SERVICE_CLIENT_NAME:service}
+      client-secret: ${SERVICE_PASSWORD:service}
+      accessTokenUri: http://localhost:9999/uaa/oauth/token
+      userAuthorizationUri: http://localhost:9999/uaa/oauth/authorize
+      grant-type: client_credentials
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  http:
+    converters.preferred-json-mapper: jackson
+    encoding:
+      charset: UTF-8
+      enabled: true
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+      resolve-lazily: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jpa:
+    show-sql: false
+    properties:
+      hibernate.show_sql: false
+  data:
+    redis.repositories.enabled: true
+    jpa.repositories.enabled: true
+  datasource:
+    continue-on-error: true
+    tomcat:
+      max-active: 20
+  #    initialize=true # Populate the database using 'data.sql'.
+  #    hikari.*= # Hikari specific settingss
+  redis:
+
+  rabbitmq:
+    host: rabbitmq
+
+
+error-messages:
+  -1: 'Teknik bir arıza oluştu. {0}'
+  0: 'Başarıyla tamamlandı.'

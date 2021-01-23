@@ -1,0 +1,26 @@
+info:
+  component: Eureka Server
+
+server:
+  port: ${PORT:${vcap.application.port:8765}}
+
+logging:
+  file: ${user.home}/Downloads/log/eureka-server.log
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    server:
+      waitTimeInMsWhenSyncEmpty: 0
+
+spring.security:
+  basic:
+    enabled: true
+  user:
+    name: ${EUREKA_USERNAME:user}
+    password: ${EUREKA_PASSWORD:12345}

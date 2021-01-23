@@ -1,0 +1,38 @@
+server:
+  port: ${PORT:${vcap.application.port:8888}}
+
+  logging:
+    file: ${user.home}/go-arena/log/config-server.log
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/shared
+
+spring.security:
+  user:
+    name: ${CONFIG_SERVER_USERNAME:user}
+    password: ${CONFIG_SERVER_PASSWORD:12345}
+
+eureka:
+  instance:
+    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+    leaseRenewalIntervalInSeconds: 2
+    leaseExpirationDurationInSeconds: 5
+    prefer-ip-address: true
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://${EUREKA_USERNAME:user}:${EUREKA_PASSWORD:12345}@localhost:8765/eureka/
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+
+management.security.enabled: false
