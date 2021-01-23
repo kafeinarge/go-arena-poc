@@ -21,7 +21,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .antMatcher("/**").authorizeRequests()
-                .antMatchers("/get-one").permitAll()
+                .antMatchers("/username/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
