@@ -1,6 +1,5 @@
 package tr.kafein.com.uaaserver.service;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +26,10 @@ public class UserDetailsService implements org.springframework.security.core.use
         log.debug("Authenticating {}", login);
         String lowercaseLogin = StringUtils.trim(login);
 
-        UserDto userFromDatabase = userServiceAccessor.getOne();
+        UserDto userFromDatabase = userServiceAccessor.findByUsername(login);
         return Optional.ofNullable(userFromDatabase)
                 .map(user -> {
-                    SecurityUser securityUser = new SecurityUser(lowercaseLogin, "pass");
+                    SecurityUser securityUser = new SecurityUser(lowercaseLogin, userFromDatabase.password);
                     securityUser.setId(userFromDatabase.id);
                     securityUser.setName(userFromDatabase.name);
                     return securityUser;

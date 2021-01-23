@@ -33,10 +33,9 @@ public class CustomAuthenticationManager {
             throw new UsernameNotFoundException(username);
         }
 
-        //TODO @mahmut open with user password encryption
-        /*if (!encoder.matches(password, userDetails.getPassword())) {
+        if (!encoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Hatalı Giriş");
-        }*/
+        }
 
         Collection<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
         if (userDetails.getAuthorities() != null) {
