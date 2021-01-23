@@ -71,6 +71,9 @@ spring:
   rabbitmq:
     host: rabbitmq
 
+springdoc:
+  swagger-ui:
+    path: /
 
 error-messages:
   -1: 'Teknik bir arıza oluştu. {0}'
