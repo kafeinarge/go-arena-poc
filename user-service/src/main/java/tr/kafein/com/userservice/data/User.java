@@ -3,7 +3,7 @@ package tr.kafein.com.userservice.data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user", schema = "postgres")
+@Table(name = "user", schema = "userservice")
 public class User {
 
     @Id
