@@ -12,21 +12,6 @@ spring:
           enabled: true
           lowerCaseServiceId: true
 
-eureka:
-  instance:
-    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
-    leaseRenewalIntervalInSeconds: 2
-    leaseExpirationDurationInSeconds: 5
-    prefer-ip-address: true
-  client:
-    enabled: true
-    serviceUrl:
-      defaultZone: http://${EUREKA_USERNAME:user}:${EUREKA_PASSWORD:12345}@localhost:8765/eureka/
-    healthcheck:
-      enabled: true
-    lease:
-      duration: 5
-
 server:
   port: 8000
   servlet:
