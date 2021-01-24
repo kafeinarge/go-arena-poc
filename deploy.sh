@@ -9,4 +9,4 @@ do
     cd ..
 done
 
-docker-compose up
+docker-compose up -d
