@@ -1,13 +1,19 @@
 package tr.com.kafein.dashboard.security;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import tr.com.kafein.dashboard.dto.ErrorDto;
 import tr.com.kafein.dashboard.util.Constants;
 
 import javax.servlet.FilterChain;
@@ -23,6 +29,8 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
         super(authManager);
     }
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
@@ -32,7 +40,21 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(req, res);
             return;
         }
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        UsernamePasswordAuthenticationToken authentication = null;
+        try {
+            authentication = getAuthentication(req);
+        } catch (ExpiredJwtException e) {
+            ErrorDto dto = new ErrorDto();
+            dto.setResultCode(HttpStatus.UNAUTHORIZED.value());
+            dto.setResult(HttpStatus.UNAUTHORIZED.name());
+            dto.setErrorMessage("Oturumunuzun süresi dolmuş, lütfen tekrar giriş yapınız");
+            res.resetBuffer();
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+            objectMapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
+            res.getOutputStream().print(objectMapper.writeValueAsString(dto));
+            res.flushBuffer();
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
@@ -43,7 +65,7 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (token != null) {
             Claims claims = Jwts.parser()
                     .setSigningKey(Constants.TOKEN_SECRET)
-                    .   parseClaimsJws(token.replace(Constants.TOKEN_PREFIX, ""))
+                    .parseClaimsJws(token.replace(Constants.TOKEN_PREFIX, ""))
                     .getBody();
             String user = claims.getSubject();
             ArrayList<String> roles = (ArrayList<String>) claims.get(Constants.TOKEN_AUTHORITIES_KEY);
