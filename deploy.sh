@@ -1,4 +1,4 @@
-declare -a SERVICES=('api-gateway' 'config-server' 'eureka-server' 'uaa-server' 'user-service')
+declare -a SERVICES=('api-gateway' 'config-server' 'dashboard-service' 'eureka-server' 'uaa-server' 'user-service' 'wall-service')
 
 for SERVICE in "${SERVICES[@]}"
 do

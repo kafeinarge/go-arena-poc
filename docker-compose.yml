@@ -23,6 +23,22 @@ services:
     networks:
       go-arena-network:
 
+  dashboard-service:
+    image: 'dashboard-service'
+    container_name: dashboard-service
+    restart: always
+    depends_on:
+      config-server:
+        condition: service_started
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,docker"
+    ports:
+      - "8767:8767"
+    networks:
+      go-arena-network:
+
   eureka-server:
     image: 'eureka-server'
     container_name: eureka-server
@@ -56,6 +72,22 @@ services:
     ports:
       - "8766:8766"
     depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      go-arena-network:
+
+  wall-service:
+    image: 'wall-service'
+    container_name: wall-service
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,docker"
+    ports:
+      - "8768:8768"
+    depends_on:
+      config-server:
+        condition: service_started
       postgres-db:
         condition: service_healthy
     networks:
