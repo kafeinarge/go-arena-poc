@@ -2,11 +2,14 @@ package tr.com.kafein.userservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.webjars.NotFoundException;
 import tr.com.kafein.userservice.data.User;
 import tr.com.kafein.userservice.repository.UserRepository;
 import tr.com.kafein.userservice.util.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,7 +26,11 @@ public class UserService {
     }
 
     public User getById(Long id) {
-        return userRepository.getOne(id);
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            return user.get();
+        else
+            throw new NotFoundException("User id :[" + id + "] could not found");
     }
 
     public User getByUsername(String username) {
