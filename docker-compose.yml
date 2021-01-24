@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    image: 'api-gateway'
+    container_name: api-gateway
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,docker"
+    ports:
+      - "8765:8765"
+    networks:
+      go-arena-network:
+
+  config-server:
+    image: 'config-server'
+    container_name: config-server
+    restart: always
+    ports:
+      - "8888:8888"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,docker"
+    networks:
+      go-arena-network:
+
+  eureka-server:
+    image: 'eureka-server'
+    container_name: eureka-server
+    restart: always
+    depends_on:
+      - config-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,docker"
+    ports:
+      - "8761:8761"
+    networks:
+      go-arena-network:
+
+  uaa-server:
+    image: 'uaa-server'
+    container_name: uaa-server
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,docker"
+    ports:
+      - "5000:5000"
+    networks:
+      go-arena-network:
+
+  user-service:
+    image: 'user-service'
+    container_name: user-service
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=native,docker"
+    ports:
+      - "8766:8766"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      go-arena-network:
+
+  postgres-db:
+    image: "postgres:13.1-alpine"
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=go-arena123
+    volumes:
+      - ./postgres-db:/docker-entrypoint-initdb.d/
+    networks:
+      go-arena-network:
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  go-arena-network:

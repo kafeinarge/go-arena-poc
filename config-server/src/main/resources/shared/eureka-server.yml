@@ -2,7 +2,7 @@ info:
   component: Eureka Server
 
 server:
-  port: ${PORT:${vcap.application.port:8765}}
+  port: ${PORT:${vcap.application.port:8761}}
 
 logging:
   file: ${user.home}/Downloads/log/eureka-server.log
