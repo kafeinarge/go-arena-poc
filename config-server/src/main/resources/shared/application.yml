@@ -96,6 +96,14 @@ eureka:
     serviceUrl:
       defaultZone: http://user:12345@eureka-server:8761/eureka/
 
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://uaa-server:9999/uaa/user
+    client:
+      accessTokenUri: http://uaa-server:9999/uaa/oauth/token
+      userAuthorizationUri: http://uaa-server:9999/uaa/oauth/authorize
+
 feign:
   client:
     url:
