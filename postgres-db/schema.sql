@@ -1,1 +1,3 @@
 CREATE SCHEMA IF NOT EXISTS userservice;
+CREATE SCHEMA IF NOT EXISTS dashboardservice;
+CREATE SCHEMA IF NOT EXISTS wallservice;
