@@ -1,10 +1,11 @@
 package tr.com.kafein.wall.dto;
 
 public class UserDto {
-    public Long id;
-    public String name;
+    private Long id;
+    private String name;
     private String surname;
     private String username;
+    private boolean isAdmin;
 
     public Long getId() {
         return id;
@@ -36,5 +37,13 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
