@@ -5,15 +5,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import tr.com.kafein.uaaserver.exception.UnauthorizedException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 @Service
 public class CustomAuthenticationManager {
@@ -30,11 +28,11 @@ public class CustomAuthenticationManager {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (userDetails == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UnauthorizedException(username);
         }
 
         if (!encoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("Hatalı Giriş");
+            throw new UnauthorizedException("Hatalı Giriş");
         }
 
         return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());

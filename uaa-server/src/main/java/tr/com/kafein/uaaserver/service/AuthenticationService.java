@@ -3,11 +3,10 @@ package tr.com.kafein.uaaserver.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import tr.com.kafein.uaaserver.exception.UnauthorizedException;
 import tr.com.kafein.uaaserver.util.Constants;
 import tr.com.kafein.uaaserver.util.DateUtil;
 import tr.com.kafein.uaaserver.dto.AccessTokenDto;
@@ -42,6 +41,6 @@ public class AuthenticationService {
             tokenDto.expireDate = DateUtil.toString(expireDate);
             return tokenDto;
         }
-        throw new BadCredentialsException("Hatalı Giriş");
+        throw new UnauthorizedException("Hatalı Giriş");
     }
 }
