@@ -5,10 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 import tr.com.kafein.wall.accessor.UserServiceAccessor;
 import tr.com.kafein.wall.data.Post;
 import tr.com.kafein.wall.dto.UserDto;
+import tr.com.kafein.wall.exception.InternalServerError;
+import tr.com.kafein.wall.exception.NotFoundException;
 import tr.com.kafein.wall.repository.PostRepository;
 import tr.com.kafein.wall.type.ApprovalType;
 
@@ -59,7 +60,7 @@ public class PostService {
         if (post.isPresent())
             return post.get();
         else
-            throw new NotFoundException("Post id :[" + id + "] could not found");
+            throw new NotFoundException("Post id :[" + id + "] bulunamadı");
     }
 
     public Post update(Long id, Post entity) {
@@ -86,7 +87,7 @@ public class PostService {
 
     public Post updateApprovalStatus(Long id, ApprovalType approvalType) {
         if (!isAdminSession()) {
-            throw new RuntimeException("Bu işlemi sadece adminler gerçekleştirebilir");
+            throw new InternalServerError("Bu işlemi sadece adminler gerçekleştirebilir");
         }
         Post post = getById(id);
         post.setApproval(approvalType);

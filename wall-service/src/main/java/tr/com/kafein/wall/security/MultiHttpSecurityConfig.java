@@ -1,13 +1,18 @@
 package tr.com.kafein.wall.security;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import tr.com.kafein.wall.dto.ErrorDto;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,13 +22,27 @@ import javax.servlet.http.HttpServletResponse;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        ErrorDto dto = new ErrorDto();
+        dto.setResultCode(401);
+        dto.setResult(HttpStatus.UNAUTHORIZED.name());
+        dto.setErrorMessage("Lütfen Giris Yapınız");
+        objectMapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
+
         http.csrf().disable()
                 .antMatcher("/**").authorizeRequests()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
-                .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .authenticationEntryPoint((req, rsp, e) -> {
+                    rsp.resetBuffer();
+                    rsp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    rsp.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+                    rsp.getOutputStream().print(objectMapper.writeValueAsString(dto));
+                    rsp.flushBuffer();
+                })
                 .and().addFilter(new ApiJWTAuthorizationFilter(authenticationManager()))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

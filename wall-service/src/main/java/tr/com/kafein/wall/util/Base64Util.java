@@ -1,7 +1,8 @@
 package tr.com.kafein.wall.util;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.webjars.NotFoundException;
+import tr.com.kafein.wall.exception.InternalServerError;
+import tr.com.kafein.wall.exception.NotFoundException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class Base64Util {
         } catch (FileNotFoundException e) {
             throw new NotFoundException("Resim Bulunamadı");
         } catch (IOException ioe) {
-            throw new RuntimeException("Resim okunurken hata meydana geldi");
+            throw new InternalServerError("Resim okunurken hata meydana geldi");
         }
     }
 }
