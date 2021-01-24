@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User getById(Long id) {
+        return userRepository.getOne(id);
+    }
+
     public User getByUsername(String username) {
         return userRepository.findByUsername(username);
     }
