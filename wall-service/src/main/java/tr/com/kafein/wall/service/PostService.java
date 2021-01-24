@@ -53,6 +53,8 @@ public class PostService {
     public Post update(Long id, Post entity) {
         Post real = getById(id);
         entity.setId(real.getId());
+        entity.setCreationDate(real.getCreationDate());
+        entity.setUserId(real.getUserId());
         if(entity.getPreview() == null)
             entity.setPreview(real.getPreview());
         return postRepository.save(entity);
