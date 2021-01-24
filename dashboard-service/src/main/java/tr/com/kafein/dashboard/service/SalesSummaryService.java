@@ -1,6 +1,9 @@
 package tr.com.kafein.dashboard.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tr.com.kafein.dashboard.accessor.UserServiceAccessor;
 import tr.com.kafein.dashboard.data.SalesSummary;
@@ -20,6 +23,25 @@ public class SalesSummaryService {
 
     @Autowired
     private UserServiceAccessor userServiceAccessor;
+
+    public Page<SalesSummary> getSummaries(Integer year, Integer month, SalesCategoryType category, Pageable pageable) {
+        SalesSummary filterObject = new SalesSummary();
+        filterObject.setYear(year);
+        filterObject.setMonth(month);
+        filterObject.setCategory(category);
+        Page<SalesSummary> result = salesSummaryRepository.findAll(Example.of(filterObject), pageable);
+        if (result.getNumberOfElements() > 0) {
+            final UserDto[] user = {null};
+            result.get().forEach(salesSummary -> {
+                if(user[0] == null) {
+                    user[0] = userServiceAccessor.getById(salesSummary.getUserId());
+                }
+                salesSummary.setUser(user[0]);
+            });
+        }
+
+        return result;
+    }
 
     @PostConstruct
     private void createDummySummaries() {

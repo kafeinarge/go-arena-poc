@@ -3,7 +3,8 @@ package tr.com.kafein.dashboard.dto;
 public class UserDto {
     public Long id;
     public String name;
-    public String password;
+    private String surname;
+    private String username;
 
     public Long getId() {
         return id;
@@ -21,11 +22,19 @@ public class UserDto {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

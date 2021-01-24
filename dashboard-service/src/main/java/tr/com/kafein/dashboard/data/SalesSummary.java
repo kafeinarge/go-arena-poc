@@ -1,5 +1,6 @@
 package tr.com.kafein.dashboard.data;
 
+import tr.com.kafein.dashboard.dto.UserDto;
 import tr.com.kafein.dashboard.type.SalesCategoryType;
 
 import javax.persistence.*;
@@ -14,15 +15,18 @@ public class SalesSummary {
 
     private Long userId;
 
+    @Transient
+    private UserDto user;
+
     private Integer paidCount;
 
     private Integer unpaidCount;
 
     private Integer totalGoal;
 
-    private int year;
+    private Integer year;
 
-    private int month;
+    private Integer month;
 
     @Enumerated(EnumType.STRING)
     private SalesCategoryType category;
@@ -67,19 +71,19 @@ public class SalesSummary {
         this.totalGoal = totalGoal;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
@@ -89,5 +93,13 @@ public class SalesSummary {
 
     public void setCategory(SalesCategoryType category) {
         this.category = category;
+    }
+
+    public UserDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 }

@@ -5,11 +5,11 @@ import tr.com.kafein.dashboard.type.SalesCategoryType;
 public class SalesSummaryDto {
     private UserDto user;
 
-    private Double paidCount;
+    private Integer paidCount;
 
-    private Double unpaidCount;
+    private Integer unpaidCount;
 
-    private Double totalGoal;
+    private Integer totalGoal;
 
     private int year;
 
@@ -25,27 +25,27 @@ public class SalesSummaryDto {
         this.user = user;
     }
 
-    public Double getPaidCount() {
+    public Integer getPaidCount() {
         return paidCount;
     }
 
-    public void setPaidCount(Double paidCount) {
+    public void setPaidCount(Integer paidCount) {
         this.paidCount = paidCount;
     }
 
-    public Double getUnpaidCount() {
+    public Integer getUnpaidCount() {
         return unpaidCount;
     }
 
-    public void setUnpaidCount(Double unpaidCount) {
+    public void setUnpaidCount(Integer unpaidCount) {
         this.unpaidCount = unpaidCount;
     }
 
-    public Double getTotalGoal() {
+    public Integer getTotalGoal() {
         return totalGoal;
     }
 
-    public void setTotalGoal(Double totalGoal) {
+    public void setTotalGoal(Integer totalGoal) {
         this.totalGoal = totalGoal;
     }
 
