@@ -17,4 +17,9 @@ public class UserController {
     public User findByUsername(@PathVariable String username) {
         return userService.getByUsername(username);
     }
+
+    @GetMapping("/get-one")
+    public User getOne() {
+        return userService.getOne();
+    }
 }

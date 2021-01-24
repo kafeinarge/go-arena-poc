@@ -21,7 +21,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .antMatcher("/**").authorizeRequests()
-                .antMatchers("/username/**").permitAll()
+                .antMatchers("/username/**", "/get-one").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
@@ -36,6 +36,6 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/common/**", "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
-                "/configuration/security", "/swagger-ui.html", "/webjars/**", "/","/h2","/h2-console");
+                "/configuration/security", "/swagger-ui.html", "/webjars/**", "/", "/h2", "/h2-console");
     }
 }

@@ -26,6 +26,10 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public User getOne() {
+        return userRepository.findAll().get(0);
+    }
+
     @PostConstruct
     public void createFirstUser() {
         User user = new User();
