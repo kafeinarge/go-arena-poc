@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tr.com.kafein.wall.dto.UserDto;
 
-@FeignClient(value = "user-service", url = "http://localhost:8766/")
+@FeignClient(value = "user-service", url = "${feign.client.url.user-service}")
 public interface UserServiceAccessor {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = "application/json")
