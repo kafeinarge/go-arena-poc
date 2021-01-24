@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: wall-service
+  autoconfigure:
+    exclude:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://167.172.180.49:5432/postgres
+    username: postgres
+    password: go-arena123
+    driverClassName: org.postgresql.Driver
+
+server:
+  port: 8768
+  servlet:
+    session:
+      cookie:
+        http-only: true
+
+---
+
+spring:
+  profiles: docker
+  datasource:
+    url: jdbc:postgresql://postgres-db:5432/postgres

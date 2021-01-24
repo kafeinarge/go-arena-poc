@@ -15,5 +15,6 @@
         <module>uaa-server</module>
         <module>user-service</module>
         <module>dashboard-service</module>
+        <module>wall-service</module>
     </modules>
 </project>
