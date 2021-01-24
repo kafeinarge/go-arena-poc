@@ -25,18 +25,29 @@ public class PostService {
     private UserServiceAccessor userServiceAccessor;
 
     public Page<Post> allPageable(Pageable pageable) {
-        Page<Post> result = postRepository.findAll(pageable);
-        if (result.getNumberOfElements() > 0) {
+        Page<Post> result = getAllPageable(pageable);
+        fillUserFieldsToPostPage(result);
+        return result;
+    }
+
+    private Page<Post> getAllPageable(Pageable pageable) {
+        if (isAdminSession()) {
+            return postRepository.findAll(pageable);
+        } else {
+            return postRepository.findAllByApproval(ApprovalType.APPROVED, pageable);
+        }
+    }
+
+    private void fillUserFieldsToPostPage(Page<Post> page) {
+        if (page.getNumberOfElements() > 0) {
             final UserDto[] user = {null};
-            result.get().forEach(post -> {
+            page.get().forEach(post -> {
                 if (user[0] == null) {
                     user[0] = userServiceAccessor.getById(post.getUserId());
                 }
                 post.setUser(user[0]);
             });
         }
-
-        return result;
     }
 
     public void delete(Long id) {
@@ -74,12 +85,16 @@ public class PostService {
     }
 
     public Post updateApprovalStatus(Long id, ApprovalType approvalType) {
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(!userServiceAccessor.findByUsername(username).isAdmin()) {
+        if (!isAdminSession()) {
             throw new RuntimeException("Bu işlemi sadece adminler gerçekleştirebilir");
         }
         Post post = getById(id);
         post.setApproval(approvalType);
         return postRepository.save(post);
+    }
+
+    private boolean isAdminSession() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userServiceAccessor.findByUsername(username).isAdmin();
     }
 }
