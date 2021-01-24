@@ -30,14 +30,8 @@ public class AuthenticationService {
         Authentication authentication = customAuthenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         if (authentication.getPrincipal() != null) {
-            ArrayList<String> authList = new ArrayList<>(authentication.getAuthorities().size());
-
-            for (GrantedAuthority authority : authentication.getAuthorities()) {
-                authList.add(authority.getAuthority());
-            }
             Date expireDate = new Date(System.currentTimeMillis() + Constants.EXPIRATION_TIME);
             String token = Jwts.builder()
-                    .claim(Constants.TOKEN_AUTHORITIES_KEY, authList)
                     .setSubject(userName)
                     .setExpiration(expireDate)
                     .signWith(SignatureAlgorithm.HS512, Constants.TOKEN_SECRET)
@@ -46,9 +40,7 @@ public class AuthenticationService {
             AccessTokenDto tokenDto = new AccessTokenDto();
             tokenDto.token = token;
             tokenDto.expireDate = DateUtil.toString(expireDate);
-
             return tokenDto;
-
         }
         throw new BadCredentialsException("Hatalı Giriş");
     }

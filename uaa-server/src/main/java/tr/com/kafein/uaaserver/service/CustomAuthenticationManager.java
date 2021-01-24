@@ -37,13 +37,6 @@ public class CustomAuthenticationManager {
             throw new BadCredentialsException("Hatalı Giriş");
         }
 
-        Collection<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        if (userDetails.getAuthorities() != null) {
-            for (GrantedAuthority authority : userDetails.getAuthorities()) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
-            }
-        }
-
-        return new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
+        return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
     }
 }

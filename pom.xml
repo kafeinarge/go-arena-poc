@@ -9,9 +9,9 @@
     <name>go-arena</name>
 
     <modules>
+        <module>config-server</module>
         <module>eureka-server</module>
         <module>api-gateway</module>
-        <module>config-server</module>
         <module>uaa-server</module>
         <module>user-service</module>
     </modules>
