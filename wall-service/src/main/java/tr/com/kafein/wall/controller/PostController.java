@@ -44,7 +44,7 @@ public class PostController {
     }
 
     @PutMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PostDto uploadFile(@RequestPart("file") MultipartFile file, @RequestPart("text") String text) {
+    public PostDto uploadFile(@RequestPart(value = "file", required = false) MultipartFile file, @RequestPart(value = "text", required = false) String text) {
         return mapper.toDto(postService.upload(toBase64(file), text));
     }
 
