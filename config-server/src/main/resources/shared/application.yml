@@ -75,6 +75,13 @@ springdoc:
   swagger-ui:
     path: /
 
+feign:
+  client:
+    url:
+      dashboard-service: 'http://localhost:8767/'
+      user-service: 'http://localhost:8766/'
+      wall-service: 'http://localhost:8768/'
+
 error-messages:
   -1: 'Teknik bir arıza oluştu. {0}'
   0: 'Başarıyla tamamlandı.'
@@ -88,3 +95,10 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://user:12345@eureka-server:8761/eureka/
+
+feign:
+  client:
+    url:
+      dashboard-service: 'http://dashboard-service:8767/'
+      user-service: 'http://user-service:8766/'
+      wall-service: 'http://wall-service:8768/'
