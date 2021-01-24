@@ -1,6 +1,7 @@
 package tr.com.kafein.wall.data;
 
 import tr.com.kafein.wall.dto.UserDto;
+import tr.com.kafein.wall.type.ApprovalType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,6 +27,8 @@ public class Post {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
+    @Enumerated(EnumType.STRING)
+    private ApprovalType approval;
 
     public Long getId() {
         return id;
@@ -73,5 +76,13 @@ public class Post {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public ApprovalType getApproval() {
+        return approval;
+    }
+
+    public void setApproval(ApprovalType approval) {
+        this.approval = approval;
     }
 }

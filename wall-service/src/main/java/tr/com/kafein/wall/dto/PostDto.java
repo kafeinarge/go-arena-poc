@@ -1,5 +1,7 @@
 package tr.com.kafein.wall.dto;
 
+import tr.com.kafein.wall.type.ApprovalType;
+
 import java.util.Date;
 
 public class PostDto {
@@ -14,6 +16,8 @@ public class PostDto {
     private String text;
 
     private Date creationDate;
+
+    private ApprovalType approval;
 
     public Long getId() {
         return id;
@@ -61,5 +65,13 @@ public class PostDto {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public ApprovalType getApproval() {
+        return approval;
+    }
+
+    public void setApproval(ApprovalType approval) {
+        this.approval = approval;
     }
 }
