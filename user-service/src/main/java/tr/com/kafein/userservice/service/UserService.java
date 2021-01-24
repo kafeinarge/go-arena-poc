@@ -48,8 +48,19 @@ public class UserService {
         user.setPassword("1234");
         user.setName("name");
         user.setSurname("surname");
+        user.setAdmin(false);
         if(getByUsername(user.getUsername()) == null) {
             save(user);
+        }
+
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword("1234");
+        admin.setName("admin name");
+        admin.setSurname("admin surname");
+        admin.setAdmin(true);
+        if(getByUsername(admin.getUsername()) == null) {
+            save(admin);
         }
     }
 }

@@ -14,6 +14,7 @@ public class User {
     private String password;
     @Column(unique=true)
     private String username;
+    private boolean isAdmin;
 
     public String getName() {
         return name;
@@ -53,5 +54,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
