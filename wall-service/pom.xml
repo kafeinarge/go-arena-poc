@@ -18,6 +18,8 @@
 	<properties>
 		<java.version>15</java.version>
 		<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+		<org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+		<lombok.version>1.18.10</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -111,9 +113,20 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId>
-			<version>1.4.1.Final</version>
+			<artifactId>mapstruct-jdk8</artifactId>
+			<version>${org.mapstruct.version}</version>
 		</dependency>
 
 		<dependency>
@@ -149,20 +162,30 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.6.0</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java.version}</source> <!-- or higher, depending on your project -->
+					<target>${java.version}</target> <!-- or higher, depending on your project -->
 					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
-							<version>1.3.1.Final</version>
+							<version>${org.mapstruct.version}</version>
 						</path>
 					</annotationProcessorPaths>
+					<compilerArgs>
+						<arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
+						<arg>-Amapstruct.defaultComponentModel=spring</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>

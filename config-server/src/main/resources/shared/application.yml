@@ -58,7 +58,6 @@ spring:
     properties:
       hibernate.show_sql: false
   data:
-    redis.repositories.enabled: true
     jpa.repositories.enabled: true
   datasource:
     continue-on-error: true
@@ -66,7 +65,10 @@ spring:
       max-active: 20
   #    initialize=true # Populate the database using 'data.sql'.
   #    hikari.*= # Hikari specific settingss
-  redis:
+  cache:
+    type: redis
+    host: localhost
+    port: 6379
 
   rabbitmq:
     host: rabbitmq
@@ -90,6 +92,10 @@ error-messages:
 
 spring:
   profiles: docker
+  cache:
+    type: redis
+    host: redis
+    port: 6379
 
 eureka:
   client:
