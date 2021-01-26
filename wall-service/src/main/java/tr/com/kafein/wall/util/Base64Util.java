@@ -10,6 +10,9 @@ import java.util.Base64;
 
 public class Base64Util {
     public static String toBase64(MultipartFile file) {
+        if(file == null || file.isEmpty()) {
+            return null;
+        }
         try {
             return Base64.getEncoder().encodeToString(file.getBytes());
         } catch (FileNotFoundException e) {
