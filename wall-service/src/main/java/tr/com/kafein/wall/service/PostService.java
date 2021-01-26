@@ -1,6 +1,9 @@
 package tr.com.kafein.wall.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +20,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
+@CacheConfig(cacheNames = "posts")
 public class PostService {
 
     @Autowired
@@ -25,6 +29,7 @@ public class PostService {
     @Autowired
     private UserServiceAccessor userServiceAccessor;
 
+    @Cacheable(key = "#pageable")
     public Page<Post> allPageable(Pageable pageable) {
         Page<Post> result = getAllPageable(pageable);
         fillUserFieldsToPostPage(result);
@@ -38,6 +43,9 @@ public class PostService {
             return postRepository.findAllByApproval(ApprovalType.APPROVED, pageable);
         }
     }
+
+    @CacheEvict(value = "posts", allEntries = true)
+    public void evict() {}
 
     private void fillUserFieldsToPostPage(Page<Post> page) {
         if (page.getNumberOfElements() > 0) {

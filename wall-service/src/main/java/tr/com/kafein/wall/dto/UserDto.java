@@ -1,6 +1,8 @@
 package tr.com.kafein.wall.dto;
 
-public class UserDto {
+import java.io.Serializable;
+
+public class UserDto implements Serializable {
     private Long id;
     private String name;
     private String surname;
