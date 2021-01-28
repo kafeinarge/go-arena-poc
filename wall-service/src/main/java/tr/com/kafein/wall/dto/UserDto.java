@@ -6,6 +6,7 @@ public class UserDto {
     private String surname;
     private String username;
     private boolean isAdmin;
+    private String title;
 
     public Long getId() {
         return id;
@@ -45,5 +46,13 @@ public class UserDto {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

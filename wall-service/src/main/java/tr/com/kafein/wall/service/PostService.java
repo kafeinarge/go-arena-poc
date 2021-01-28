@@ -81,7 +81,8 @@ public class PostService {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         post.setUserId(userServiceAccessor.findByUsername(username).getId());
         post.setCreationDate(new Date());
-        post.setApproval(ApprovalType.WAITING);
+        //TODO @mahmut, admin paneli çıkınca WAITING olacak
+        post.setApproval(ApprovalType.APPROVED);
         return postRepository.save(post);
     }
 
