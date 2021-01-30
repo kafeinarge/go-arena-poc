@@ -51,7 +51,8 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS")
-                        .allowedHeaders("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization");
+                        .allowedHeaders("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization")
+                        .allowedOrigins("*");
             }
         };
     }
