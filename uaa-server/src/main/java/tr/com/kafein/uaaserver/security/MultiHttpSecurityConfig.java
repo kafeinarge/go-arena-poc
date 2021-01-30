@@ -31,8 +31,8 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().addFilter(new ApiJWTAuthorizationFilter(authenticationManager()))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().cors().disable()
-                .and().httpBasic().disable();
+                .and().httpBasic().disable()
+                .cors().disable();
 
         http.headers().frameOptions().disable();
     }
@@ -50,7 +50,8 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS");
+                        .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS")
+                        .allowedHeaders("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization");
             }
         };
     }
