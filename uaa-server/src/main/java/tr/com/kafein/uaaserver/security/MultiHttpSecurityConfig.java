@@ -31,6 +31,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().addFilter(new ApiJWTAuthorizationFilter(authenticationManager()))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().cors().disable()
                 .and().httpBasic().disable();
 
         http.headers().frameOptions().disable();
