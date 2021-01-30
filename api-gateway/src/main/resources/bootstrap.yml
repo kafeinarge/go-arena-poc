@@ -14,14 +14,9 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins: "*"
-            allowedMethods:
-              -GET
-              -HEAD
-              -PUT
-              -POST
-              -DELETE
-              -PATCH
-              -OPTIONS
+            allowedMethods: "*"
+            allowCredentials: true
+        add-to-simple-url-handler-mapping: true
 
 ---
 
