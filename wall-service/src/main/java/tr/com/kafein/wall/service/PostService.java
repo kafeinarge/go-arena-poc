@@ -57,10 +57,11 @@ public class PostService {
 
     public Post getById(Long id) {
         Optional<Post> post = postRepository.findById(id);
-        if (post.isPresent())
+        if (post.isPresent()) {
             return post.get();
-        else
+        } else {
             throw new NotFoundException("Post id :[" + id + "] bulunamadı");
+        }
     }
 
     public Post update(Long id, Post entity) {
@@ -69,8 +70,9 @@ public class PostService {
         entity.setCreationDate(real.getCreationDate());
         entity.setUserId(real.getUserId());
         entity.setApproval(real.getApproval());
-        if (entity.getPreview() == null)
+        if (entity.getPreview() == null) {
             entity.setPreview(real.getPreview());
+        }
         return postRepository.save(entity);
     }
 
