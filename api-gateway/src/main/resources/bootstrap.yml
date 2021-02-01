@@ -9,6 +9,14 @@ spring:
       password: ${CONFIG_SERVER_PASSWORD:12345}
       username: ${CONFIG_SERVER_USERNAME:user}
       fail-fast: true
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowCredentials: true
+        add-to-simple-url-handler-mapping: true
 
 ---
 
