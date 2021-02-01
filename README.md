@@ -27,6 +27,8 @@ If you are not using any code editor, just execute this command in your terminal
 \
 ` nohup java -jar 'JAR_PATH' >/dev/null 2>&1 &`
 
+# Ports
+
 #### config-server is served on port `8888` as default.
 
 #### eureka-server is served on port `8761` as default.
@@ -46,6 +48,6 @@ If you are not using any code editor, just execute this command in your terminal
 This project is documented with OpenAPI 3.OpenAPI url has been redirected from `/swagger-ui.html` to  `/` to make ease
 of use.\
 For example, on your host machine, you can browse, \
-
+\
 http://localhost:8766/ for user service api documentation and \
 http://localhost:8767/ for dashbord service api documentation etc.
