@@ -23,6 +23,10 @@
 		<mockito-core.version>3.5.15</mockito-core.version>
 		<mockito-inline.version>3.6.28</mockito-inline.version>
 		<jococo-plugin.version>0.8.6</jococo-plugin.version>
+		<spring-retry.version>1.2.5.RELEASE</spring-retry.version>
+		<postgresql.version>42.2.18</postgresql.version>
+		<springdoc-openapi-ui>1.5.2</springdoc-openapi-ui>
+		<jjwt.version>0.9.1</jjwt.version>
 	</properties>
 
 	<dependencies>
@@ -49,7 +53,7 @@
 		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
-			<version>1.2.5.RELEASE</version>
+			<version>${spring-retry.version}</version>
 		</dependency>
 
 		<dependency>
@@ -100,19 +104,19 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.18</version>
+			<version>${postgresql.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.2</version>
+			<version>${springdoc-openapi-ui}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
+			<version>${jjwt.version}</version>
 		</dependency>
 
 		<dependency>
@@ -125,12 +129,6 @@
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-jdk8</artifactId>
 			<version>${org.mapstruct.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security.oauth</groupId>
-			<artifactId>spring-security-oauth2</artifactId>
-			<version>2.3.8.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
