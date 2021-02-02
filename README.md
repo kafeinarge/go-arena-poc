@@ -12,6 +12,10 @@ monitor and manage your daily operational transactions.
 - [Docker](https://hub.docker.com/search?q=&type=edition&offering=community&operating_system=linux)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
+# Architectural Design
+
+![alt text](https://i.hizliresim.com/sI4BrE.jpg)
+
 # How To Build and Run
 
 ## 1 - On A Docker Container
