@@ -11,6 +11,8 @@ public class TestConstants {
     }
 
     public static final String MOCK_STRING = "tests";
+    public static final String ROLE1 = "ROLE1";
+    public static final String ROLE2 = "ROLE2";
 
     public static final Integer PAGE_NO = 0;
     public static final Integer PAGE_SIZE = 10;

@@ -41,7 +41,11 @@ class CustomExceptionHandlerTest {
             }
         });
 
-        ErrorDto errorDto = new ErrorDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.name(), ex.getMessage());
+        ErrorDto errorDto = ErrorDto.builder()
+                .resultCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .result(HttpStatus.INTERNAL_SERVER_ERROR.name())
+                .errorMessage(ex.getMessage())
+                .build();
 
         ResponseEntity<Object> expectedResult = new ResponseEntity<>(errorDto, headers, HttpStatus.INTERNAL_SERVER_ERROR);
         ResponseEntity<Object> result = exceptionHandler.handleHttpMessageNotReadable(ex, headers, status, request);

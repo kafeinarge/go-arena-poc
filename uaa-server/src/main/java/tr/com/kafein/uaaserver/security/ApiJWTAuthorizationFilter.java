@@ -46,7 +46,7 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (!StringUtils.isBlank(token) && token.startsWith(TOKEN_PREFIX)) {
             Claims claims = Jwts.parser()
                     .setSigningKey(TOKEN_SECRET)
-                    .   parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
             String user = claims.getSubject();
 

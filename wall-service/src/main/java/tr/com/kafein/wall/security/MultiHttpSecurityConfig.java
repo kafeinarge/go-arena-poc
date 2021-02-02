@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -42,7 +43,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint((req, rsp, e) -> {
                     rsp.resetBuffer();
                     rsp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    rsp.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+                    rsp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
                     rsp.getOutputStream().print(objectMapper.writeValueAsString(dto));
                     rsp.flushBuffer();
                 })

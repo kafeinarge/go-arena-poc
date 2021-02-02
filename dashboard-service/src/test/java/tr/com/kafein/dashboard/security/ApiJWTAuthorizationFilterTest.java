@@ -1,4 +1,4 @@
-package tr.com.kafein.uaaserver.security;
+package tr.com.kafein.dashboard.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -25,15 +25,16 @@ import java.util.stream.Collectors;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
-import static tr.com.kafein.uaaserver.TestConstants.MOCK_STRING;
-import static tr.com.kafein.uaaserver.TestConstants.ROLE1;
-import static tr.com.kafein.uaaserver.TestConstants.ROLE2;
-import static tr.com.kafein.uaaserver.util.Constants.HEADER_STRING;
-import static tr.com.kafein.uaaserver.util.Constants.TOKEN_AUTHORITIES_KEY;
-import static tr.com.kafein.uaaserver.util.Constants.TOKEN_PREFIX;
-import static tr.com.kafein.uaaserver.util.Constants.TOKEN_SECRET;
+import static tr.com.kafein.dashboard.TestConstants.MOCK_STRING;
+import static tr.com.kafein.dashboard.TestConstants.ROLE1;
+import static tr.com.kafein.dashboard.TestConstants.ROLE2;
+import static tr.com.kafein.dashboard.util.Constants.HEADER_STRING;
+import static tr.com.kafein.dashboard.util.Constants.TOKEN_AUTHORITIES_KEY;
+import static tr.com.kafein.dashboard.util.Constants.TOKEN_PREFIX;
+import static tr.com.kafein.dashboard.util.Constants.TOKEN_SECRET;
 
 class ApiJWTAuthorizationFilterTest {
+
     private HttpServletRequest mockRequest;
     private ApiJWTAuthorizationFilter filter;
 
