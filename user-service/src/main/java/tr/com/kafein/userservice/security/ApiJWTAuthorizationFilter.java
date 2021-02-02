@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import tr.com.kafein.userservice.util.Constants;
+import tr.com.kafein.userservice.constants.Constants;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static tr.com.kafein.userservice.util.Constants.TOKEN_AUTHORITIES_KEY;
-import static tr.com.kafein.userservice.util.Constants.TOKEN_PREFIX;
+import static tr.com.kafein.userservice.constants.Constants.TOKEN_AUTHORITIES_KEY;
+import static tr.com.kafein.userservice.constants.Constants.TOKEN_PREFIX;
 
 public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
 

@@ -1,26 +1,30 @@
 package tr.com.kafein.userservice.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import tr.com.kafein.userservice.data.User;
 import tr.com.kafein.userservice.repository.UserRepository;
-import tr.com.kafein.userservice.util.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.util.Optional;
 
+import static tr.com.kafein.userservice.constants.Constants.USER_NOT_FOUND_MSG;
+
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository,
+                       BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public User save(User user) {
-        user.setPassword(passwordEncoder.encoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -29,7 +33,7 @@ public class UserService {
         if (user.isPresent()) {
             return user.get();
         } else {
-            throw new NotFoundException("User id :[" + id + "] could not found");
+            throw new NotFoundException(String.format(USER_NOT_FOUND_MSG, id));
         }
     }
 
