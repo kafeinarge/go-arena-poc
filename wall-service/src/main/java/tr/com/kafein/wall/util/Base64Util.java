@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Base64;
 
-public class Base64Util {
+public final class Base64Util {
     public static String toBase64(MultipartFile file) {
         if(file == null || file.isEmpty()) {
             return null;

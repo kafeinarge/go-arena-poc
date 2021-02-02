@@ -17,11 +17,14 @@ import tr.com.kafein.dashboard.type.SalesCategoryType;
 @RestController
 public class SalesSummaryController {
 
-    @Autowired
-    private SalesSummaryService salesSummaryService;
+    private final SalesSummaryService salesSummaryService;
+    private final SalesSummaryMapper mapper;
 
-    @Autowired
-    private SalesSummaryMapper mapper;
+    public SalesSummaryController(SalesSummaryService salesSummaryService,
+                                  SalesSummaryMapper mapper) {
+        this.salesSummaryService = salesSummaryService;
+        this.mapper = mapper;
+    }
 
     @GetMapping("/summaries")
     public Page<SalesSummaryDto> findPaginated(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -32,6 +35,6 @@ public class SalesSummaryController {
                                                @RequestParam(name = "month", required = false) Integer month,
                                                @RequestParam(name = "category", required = false) SalesCategoryType category) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.Direction.valueOf(direction), sortBy);
-        return salesSummaryService.getSummaries(year, month, category, pageable).map(m -> mapper.toDto(m));
+        return salesSummaryService.getSummaries(year, month, category, pageable).map(mapper::toDto);
     }
 }

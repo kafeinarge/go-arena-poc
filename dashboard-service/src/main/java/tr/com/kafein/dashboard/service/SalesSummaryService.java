@@ -1,6 +1,5 @@
 package tr.com.kafein.dashboard.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +16,14 @@ import static tr.com.kafein.dashboard.util.RandomUtil.getRandomBetween;
 
 @Service
 public class SalesSummaryService {
+    private final SalesSummaryRepository salesSummaryRepository;
+    private final UserServiceAccessor userServiceAccessor;
 
-    @Autowired
-    private SalesSummaryRepository salesSummaryRepository;
-
-    @Autowired
-    private UserServiceAccessor userServiceAccessor;
+    public SalesSummaryService(SalesSummaryRepository salesSummaryRepository,
+                               UserServiceAccessor userServiceAccessor) {
+        this.salesSummaryRepository = salesSummaryRepository;
+        this.userServiceAccessor = userServiceAccessor;
+    }
 
     public Page<SalesSummary> getSummaries(Integer year, Integer month, SalesCategoryType category, Pageable pageable) {
         SalesSummary filterObject = new SalesSummary();
@@ -32,6 +33,7 @@ public class SalesSummaryService {
         Page<SalesSummary> result = salesSummaryRepository.findAll(Example.of(filterObject), pageable);
         if (result.getNumberOfElements() > 0) {
             final UserDto[] user = {null};
+            // TODO: burada kurulmak istenen logic sorulacak (tüm sales objelerinin üzerine aynı user setleniyor)
             result.get().forEach(salesSummary -> {
                 if(user[0] == null) {
                     user[0] = userServiceAccessor.getById(salesSummary.getUserId());

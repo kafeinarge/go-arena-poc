@@ -3,7 +3,14 @@ package tr.com.kafein.dashboard.data;
 import tr.com.kafein.dashboard.dto.UserDto;
 import tr.com.kafein.dashboard.type.SalesCategoryType;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.Objects;
 
 @Entity
 @Table(name = "sales_summary", schema = "dashboardservice")
@@ -30,6 +37,25 @@ public class SalesSummary {
 
     @Enumerated(EnumType.STRING)
     private SalesCategoryType category;
+
+    public SalesSummary() {
+    }
+
+    public SalesSummary(Integer year, Integer month, SalesCategoryType category) {
+        this.year = year;
+        this.month = month;
+        this.category = category;
+    }
+
+    public SalesSummary(Long userId, Integer paidCount, Integer unpaidCount, Integer totalGoal, Integer year, Integer month, SalesCategoryType category) {
+        this.userId = userId;
+        this.paidCount = paidCount;
+        this.unpaidCount = unpaidCount;
+        this.totalGoal = totalGoal;
+        this.year = year;
+        this.month = month;
+        this.category = category;
+    }
 
     public Long getId() {
         return id;
@@ -101,5 +127,26 @@ public class SalesSummary {
 
     public void setUser(UserDto user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SalesSummary that = (SalesSummary) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(userId, that.userId) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(paidCount, that.paidCount) &&
+                Objects.equals(unpaidCount, that.unpaidCount) &&
+                Objects.equals(totalGoal, that.totalGoal) &&
+                Objects.equals(year, that.year) &&
+                Objects.equals(month, that.month) &&
+                category == that.category;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, user, paidCount, unpaidCount, totalGoal, year, month, category);
     }
 }

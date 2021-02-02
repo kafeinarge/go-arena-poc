@@ -1,5 +1,7 @@
 package tr.com.kafein.dashboard.dto;
 
+import java.util.Objects;
+
 public class UserDto {
     public Long id;
     public String name;
@@ -36,5 +38,21 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) &&
+                Objects.equals(name, userDto.name) &&
+                Objects.equals(surname, userDto.surname) &&
+                Objects.equals(username, userDto.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, username);
     }
 }
