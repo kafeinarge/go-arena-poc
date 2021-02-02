@@ -26,10 +26,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
-import static tr.com.kafein.dashboard.Constants.CATEGORY;
-import static tr.com.kafein.dashboard.Constants.MONTH;
-import static tr.com.kafein.dashboard.Constants.PAGEABLE;
-import static tr.com.kafein.dashboard.Constants.YEAR;
+import static tr.com.kafein.dashboard.TestConstants.CATEGORY;
+import static tr.com.kafein.dashboard.TestConstants.MONTH;
+import static tr.com.kafein.dashboard.TestConstants.PAGEABLE;
+import static tr.com.kafein.dashboard.TestConstants.YEAR;
 
 class SalesSummaryServiceTest {
     private SalesSummaryService service;
@@ -85,8 +85,7 @@ class SalesSummaryServiceTest {
         SalesSummary expectedS1 = resultSummaries.stream().filter(s -> s.getId().equals(1L)).findFirst().orElse(null);
         SalesSummary expectedS2 = resultSummaries.stream().filter(s -> s.getId().equals(2L)).findFirst().orElse(null);
         Assertions.assertEquals(u1, expectedS1.getUser());
-        // TODO: mahmuta sorulacak
-        // Assertions.assertEquals(u2, expectedS2.getUser());
+        Assertions.assertEquals(u2, expectedS2.getUser());
     }
 
     @Test
@@ -106,5 +105,8 @@ class SalesSummaryServiceTest {
         SalesSummary expectedSummary = new SalesSummary(u.getId(), 40, 40, 50, YEAR, MONTH, CATEGORY);
 
         Mockito.verify(mockRepository, times(1)).save(expectedSummary);
+        Mockito.verify(mockRepository, times(1)).save(expectedSummary);
+
+        mockedRandomUtil.close();
     }
 }

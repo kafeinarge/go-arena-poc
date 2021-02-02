@@ -2,6 +2,7 @@ package tr.com.kafein.uaaserver.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static tr.com.kafein.uaaserver.util.Constants.*;
 
@@ -41,24 +43,23 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
     @SuppressWarnings("unchecked")
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
+        if (!StringUtils.isBlank(token) && token.startsWith(TOKEN_PREFIX)) {
             Claims claims = Jwts.parser()
                     .setSigningKey(TOKEN_SECRET)
                     .   parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
             String user = claims.getSubject();
-            ArrayList<String> roles = (ArrayList<String>) claims.get(TOKEN_AUTHORITIES_KEY);
-            ArrayList<GrantedAuthority> list = new ArrayList<>();
-            if (roles != null) {
-                for (String a : roles) {
-                    GrantedAuthority g = new SimpleGrantedAuthority(a);
-                    list.add(g);
-                }
-            }
-            if (user != null) {
+
+            if (!StringUtils.isBlank(user)) {
+                List<String> roles = (List<String>) claims.get(TOKEN_AUTHORITIES_KEY);
+                List<GrantedAuthority> list = roles
+                        .stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
                 return new UsernamePasswordAuthenticationToken(user, null, list);
+            } else {
+                return null;
             }
-            return null;
         }
         return null;
     }

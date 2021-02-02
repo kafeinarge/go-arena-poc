@@ -1,4 +1,4 @@
-package tr.com.kafein.dashboard.exception;
+package tr.com.kafein.uaaserver.exception;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,16 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.context.request.WebRequest;
-import tr.com.kafein.dashboard.dto.ErrorDto;
+import tr.com.kafein.uaaserver.dto.ErrorDto;
 
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static tr.com.kafein.dashboard.TestConstants.MOCK_STRING;
+import static tr.com.kafein.uaaserver.TestConstants.MOCK_STRING;
 
 class CustomExceptionHandlerTest {
-    private CustomExceptionHandler exceptionHandler;
+    CustomExceptionHandler exceptionHandler;
 
     @BeforeEach
     void setUp() {
@@ -54,5 +54,22 @@ class CustomExceptionHandlerTest {
         assertEquals(exceptedBody.getErrorMessage(), resultBody.getErrorMessage());
         assertEquals(exceptedBody.getResult(), resultBody.getResult());
         assertEquals(exceptedBody.getResultCode(), resultBody.getResultCode());
+
+    }
+
+    @Test
+    void handleInternalServerError_WhenExceptionWithMsgIsGiven_ThenReturnExceptedResp() {
+        UnauthorizedException ex = new UnauthorizedException(MOCK_STRING);
+        WebRequest request = mock(WebRequest.class);
+
+        ResponseEntity<Object> result = exceptionHandler.handleInternalServerError(ex, request);
+
+        assertTrue(result.getHeaders().isEmpty());
+        assertEquals(ex.getStatus(), result.getStatusCode());
+
+        ErrorDto resultBody = (ErrorDto) result.getBody();
+        assertEquals(ex.getStatus().value(), resultBody.getResultCode());
+        assertEquals(ex.getMessage(), resultBody.getErrorMessage());
+        assertEquals(ex.getStatus().name(), resultBody.getResult());
     }
 }

@@ -9,14 +9,14 @@ import tr.com.kafein.dashboard.service.SalesSummaryService;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tr.com.kafein.dashboard.Constants.CATEGORY;
-import static tr.com.kafein.dashboard.Constants.DIRECTION;
-import static tr.com.kafein.dashboard.Constants.MONTH;
-import static tr.com.kafein.dashboard.Constants.PAGEABLE;
-import static tr.com.kafein.dashboard.Constants.PAGE_NO;
-import static tr.com.kafein.dashboard.Constants.PAGE_SIZE;
-import static tr.com.kafein.dashboard.Constants.SORT_BY;
-import static tr.com.kafein.dashboard.Constants.YEAR;
+import static tr.com.kafein.dashboard.TestConstants.CATEGORY;
+import static tr.com.kafein.dashboard.TestConstants.DIRECTION;
+import static tr.com.kafein.dashboard.TestConstants.MONTH;
+import static tr.com.kafein.dashboard.TestConstants.PAGEABLE;
+import static tr.com.kafein.dashboard.TestConstants.PAGE_NO;
+import static tr.com.kafein.dashboard.TestConstants.PAGE_SIZE;
+import static tr.com.kafein.dashboard.TestConstants.SORT_BY;
+import static tr.com.kafein.dashboard.TestConstants.YEAR;
 
 class SalesSummaryControllerTest {
     private SalesSummaryController controller;

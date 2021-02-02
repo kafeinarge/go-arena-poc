@@ -1,30 +1,29 @@
 package tr.com.kafein.uaaserver.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.com.kafein.uaaserver.exception.UnauthorizedException;
 
-import java.util.ArrayList;
+import java.util.Collections;
+
+import static tr.com.kafein.uaaserver.util.Constants.UNAUTHORIZED_MSG;
 
 @Service
 public class CustomAuthenticationManager {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final BCryptPasswordEncoder encoder;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    public CustomAuthenticationManager(UserDetailsService userDetailsService,
+                                       BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.encoder = bCryptPasswordEncoder;
+    }
 
-    Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getPrincipal().toString();
-        String password = authentication.getCredentials().toString();
-
+    Authentication authenticate(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if (userDetails == null) {
@@ -32,9 +31,9 @@ public class CustomAuthenticationManager {
         }
 
         if (!encoder.matches(password, userDetails.getPassword())) {
-            throw new UnauthorizedException("Hatalı Giriş");
+            throw new UnauthorizedException(UNAUTHORIZED_MSG);
         }
 
-        return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
+        return new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList());
     }
 }

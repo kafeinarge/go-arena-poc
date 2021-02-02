@@ -5,8 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import tr.com.kafein.dashboard.type.SalesCategoryType;
 
-public class Constants {
-    public static final String MOCK_MESSAGE = "tests";
+public class TestConstants {
+    private TestConstants() {
+        throw new IllegalStateException("Constants class.");
+    }
+
+    public static final String MOCK_STRING = "tests";
 
     public static final Integer PAGE_NO = 0;
     public static final Integer PAGE_SIZE = 10;

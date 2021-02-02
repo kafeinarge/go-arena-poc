@@ -1,9 +1,7 @@
 package tr.com.kafein.uaaserver.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,27 +11,30 @@ import tr.com.kafein.uaaserver.dto.UserDto;
 
 import java.util.Optional;
 
+import static tr.com.kafein.uaaserver.util.Constants.INVALID_USERNAME_MSG;
+
+@Slf4j
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+    private final UserServiceAccessor userServiceAccessor;
 
-    private final Logger log = LoggerFactory.getLogger(UserDetailsService.class);
-
-    @Autowired
-    private UserServiceAccessor userServiceAccessor;
+    public UserDetailsService(UserServiceAccessor userServiceAccessor) {
+        this.userServiceAccessor = userServiceAccessor;
+    }
 
     @Override
     public UserDetails loadUserByUsername(final String login) {
         log.debug("Authenticating {}", login);
-        String lowercaseLogin = StringUtils.trim(login);
+        String username = StringUtils.trim(login);
 
-        UserDto userFromDatabase = userServiceAccessor.findByUsername(login);
+        UserDto userFromDatabase = userServiceAccessor.findByUsername(username);
         return Optional.ofNullable(userFromDatabase)
                 .map(user -> {
-                    SecurityUser securityUser = new SecurityUser(lowercaseLogin, userFromDatabase.password);
-                    securityUser.setId(userFromDatabase.id);
-                    securityUser.setName(userFromDatabase.name);
+                    SecurityUser securityUser = new SecurityUser(username, userFromDatabase.getPassword());
+                    securityUser.setId(userFromDatabase.getId());
+                    securityUser.setName(userFromDatabase.getName());
                     return securityUser;
                 })
-                .orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database"));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(INVALID_USERNAME_MSG, username)));
     }
 }

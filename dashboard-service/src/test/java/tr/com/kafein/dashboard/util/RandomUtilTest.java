@@ -2,9 +2,6 @@ package tr.com.kafein.dashboard.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-
-import static org.mockito.Mockito.mockStatic;
 
 class RandomUtilTest {
 

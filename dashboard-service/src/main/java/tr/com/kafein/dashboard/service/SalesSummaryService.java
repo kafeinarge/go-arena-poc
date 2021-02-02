@@ -32,13 +32,9 @@ public class SalesSummaryService {
         filterObject.setCategory(category);
         Page<SalesSummary> result = salesSummaryRepository.findAll(Example.of(filterObject), pageable);
         if (result.getNumberOfElements() > 0) {
-            final UserDto[] user = {null};
-            // TODO: burada kurulmak istenen logic sorulacak (tüm sales objelerinin üzerine aynı user setleniyor)
             result.get().forEach(salesSummary -> {
-                if(user[0] == null) {
-                    user[0] = userServiceAccessor.getById(salesSummary.getUserId());
-                }
-                salesSummary.setUser(user[0]);
+                UserDto user = userServiceAccessor.getById(salesSummary.getUserId());
+                salesSummary.setUser(user);
             });
         }
 
@@ -48,7 +44,7 @@ public class SalesSummaryService {
     @PostConstruct
     private void createDummySummaries() {
         UserDto randomUser = userServiceAccessor.getOne();
-        if (salesSummaryRepository.findAll().size() == 0) {
+        if (salesSummaryRepository.findAll().isEmpty()) {
             for (int i = 1; i < 13; i++) {
                 for (int j = 0; j < 3; j++) {
                     createDummySummary(randomUser, SalesCategoryType.values()[j], 2020, i);

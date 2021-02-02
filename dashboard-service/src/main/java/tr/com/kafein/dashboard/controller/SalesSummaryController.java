@@ -1,6 +1,5 @@
 package tr.com.kafein.dashboard.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import tr.com.kafein.dashboard.dto.SalesSummaryDto;
 import tr.com.kafein.dashboard.mapper.SalesSummaryMapper;
 import tr.com.kafein.dashboard.service.SalesSummaryService;
 import tr.com.kafein.dashboard.type.SalesCategoryType;
-
 
 @RestController
 public class SalesSummaryController {

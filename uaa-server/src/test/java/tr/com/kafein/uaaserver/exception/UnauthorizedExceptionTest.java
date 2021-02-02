@@ -1,10 +1,10 @@
-package tr.com.kafein.dashboard.exception;
+package tr.com.kafein.uaaserver.exception;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static tr.com.kafein.dashboard.TestConstants.MOCK_STRING;
+import static tr.com.kafein.uaaserver.TestConstants.MOCK_STRING;
 
 class UnauthorizedExceptionTest {
 
