@@ -13,8 +13,7 @@ monitor and manage your daily operational transactions.
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 # Architectural Design
-
-![alt text](https://i.hizliresim.com/sI4BrE.jpg)
+![Alt text](doc/architectural_design.jpeg?raw=true)
 
 # How To Build and Run
 
