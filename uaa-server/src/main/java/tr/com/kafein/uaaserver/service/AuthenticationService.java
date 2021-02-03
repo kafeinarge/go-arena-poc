@@ -11,7 +11,6 @@ import tr.com.kafein.uaaserver.util.Constants;
 import tr.com.kafein.uaaserver.util.DateUtil;
 import tr.com.kafein.uaaserver.dto.AccessTokenDto;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import static tr.com.kafein.uaaserver.util.Constants.UNAUTHORIZED_MSG;
