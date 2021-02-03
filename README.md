@@ -1,7 +1,9 @@
 # Türkcell Go Arena POC
 
-POC project of Türkcell's Go Arena that includes ticket purchasing, price adjustment, defining airfields, flights,
-flight routes and flight companies.
+POC project of Türkcell's Go Arena.\
+\
+For the use of Go Arena Sales Management Team and dealer employees. With the Go Arena application, you can easily
+monitor and manage your daily operational transactions.
 
 ### What you'll need
 
@@ -10,18 +12,22 @@ flight routes and flight companies.
 - [Docker](https://hub.docker.com/search?q=&type=edition&offering=community&operating_system=linux)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
+# Architectural Design
+
+![alt text](https://i.hizliresim.com/sI4BrE.jpg)
+
 # How To Build and Run
 
 ## 1 - On A Docker Container
 
-Just run the given deploy script  
+Just run the given deploy script  \
 `./deploy.sh`\
 It'll deploy all microservices and a postgresql server on containers and connect them on a single docker network.
 
 ## 2 - Standalone
 
-Get a maven build on root pom
-`mvn clean install`  
+Get a maven build on root pom\
+`mvn clean install -DskipTests`  
 Then run the microservices from Application classes as your main class.\
 If you are not using any code editor, just execute this command in your terminal\
 \

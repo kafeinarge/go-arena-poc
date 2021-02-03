@@ -37,7 +37,7 @@ public class PostService {
 
     private Page<Post> getAllPageable(Pageable pageable) {
         if (isAdminSession()) {
-            return postRepository.findAll(pageable);
+            return postRepository.findAllByApproval(ApprovalType.WAITING, pageable);
         } else {
             return postRepository.findAllByApproval(ApprovalType.APPROVED, pageable);
         }

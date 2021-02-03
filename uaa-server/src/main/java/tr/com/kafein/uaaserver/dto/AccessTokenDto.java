@@ -10,4 +10,5 @@ import lombok.ToString;
 public class AccessTokenDto {
     private String token;
     private String expireDate;
+    private Long userId;
 }
