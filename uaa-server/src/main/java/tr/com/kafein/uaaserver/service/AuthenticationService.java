@@ -2,10 +2,6 @@ package tr.com.kafein.uaaserver.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.com.kafein.uaaserver.accessor.UserServiceAccessor;
@@ -15,16 +11,21 @@ import tr.com.kafein.uaaserver.util.Constants;
 import tr.com.kafein.uaaserver.util.DateUtil;
 import tr.com.kafein.uaaserver.dto.AccessTokenDto;
 
-import java.util.ArrayList;
 import java.util.Date;
+
+import static tr.com.kafein.uaaserver.util.Constants.UNAUTHORIZED_MSG;
 
 @Service
 public class AuthenticationService {
 
-    @Autowired
-    private UserServiceAccessor userServiceAccessor;
+    private final UserServiceAccessor userServiceAccessor;
+    private final BCryptPasswordEncoder encoder;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    public AuthenticationService(UserServiceAccessor userServiceAccessor,
+                                 BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userServiceAccessor = userServiceAccessor;
+        this.encoder = bCryptPasswordEncoder;
+    }
 
     public AccessTokenDto getToken(String username, String password) {
         UserDto userFromDatabase = userServiceAccessor.findByUsername(username);
@@ -33,11 +34,9 @@ public class AuthenticationService {
             throw new UnauthorizedException(username);
         }
 
-        if (!encoder.matches(password, userFromDatabase.password)) {
-            throw new UnauthorizedException("Hatalı Giriş");
+        if (!encoder.matches(password, userFromDatabase.getPassword())) {
+            throw new UnauthorizedException(UNAUTHORIZED_MSG);
         }
-
-
         Date expireDate = new Date(System.currentTimeMillis() + Constants.EXPIRATION_TIME);
         String token = Jwts.builder()
                 .setSubject(username)
@@ -46,10 +45,9 @@ public class AuthenticationService {
                 .compact();
 
         AccessTokenDto tokenDto = new AccessTokenDto();
-        tokenDto.token = token;
-        tokenDto.expireDate = DateUtil.toString(expireDate);
-        tokenDto.userId = userFromDatabase.id;
+        tokenDto.setToken(token);
+        tokenDto.setExpireDate(DateUtil.toString(expireDate));
+        tokenDto.setUserId(userFromDatabase.getId());
         return tokenDto;
-
     }
 }

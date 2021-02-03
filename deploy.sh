@@ -4,7 +4,7 @@ for SERVICE in "${SERVICES[@]}"
 do
     cd "${SERVICE}" || exit
     ./mvnw clean install -DskipTests
-    ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName="${SERVICE}" -DskipTests  # TODO: remove skipTests
+    ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName="${SERVICE}"
     sleep 1s;
     cd ..
 done

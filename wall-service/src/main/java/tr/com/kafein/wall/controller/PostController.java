@@ -1,12 +1,18 @@
 package tr.com.kafein.wall.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import tr.com.kafein.wall.dto.PostDto;
 import tr.com.kafein.wall.mapper.PostMapper;
@@ -18,11 +24,13 @@ import static tr.com.kafein.wall.util.Base64Util.toBase64;
 @RestController
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
+    private final PostMapper mapper;
 
-    @Autowired
-    private PostMapper mapper;
+    public PostController(PostService postService, PostMapper mapper) {
+        this.postService = postService;
+        this.mapper = mapper;
+    }
 
     @GetMapping("/all")
     public Page<PostDto> allPageable(@RequestParam(defaultValue = "0") Integer pageNo,
@@ -30,7 +38,7 @@ public class PostController {
                                      @RequestParam(defaultValue = "id") String sortBy,
                                      @RequestParam(name = "direction", required = false, defaultValue = "ASC") String direction) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.Direction.valueOf(direction), sortBy);
-        return postService.allPageable(pageable).map(m -> mapper.toDto(m));
+        return postService.allPageable(pageable).map(mapper::toDto);
     }
 
     @DeleteMapping("/{id}")

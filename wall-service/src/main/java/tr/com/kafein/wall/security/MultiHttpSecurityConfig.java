@@ -1,11 +1,11 @@
 package tr.com.kafein.wall.security;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import tr.com.kafein.wall.dto.ErrorDto;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static tr.com.kafein.wall.util.Constants.MUST_BE_LOGIN;
 
 @EnableFeignClients
 @Configuration
@@ -26,11 +28,11 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        ErrorDto dto = new ErrorDto();
-        dto.setResultCode(401);
-        dto.setResult(HttpStatus.UNAUTHORIZED.name());
-        dto.setErrorMessage("Lütfen Giris Yapınız");
-        objectMapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
+        ErrorDto dto = ErrorDto.builder()
+                .resultCode(HttpStatus.UNAUTHORIZED.value())
+                .result(HttpStatus.UNAUTHORIZED.name())
+                .errorMessage(MUST_BE_LOGIN)
+                .build();
 
         http.csrf().disable()
                 .antMatcher("/**").authorizeRequests()
@@ -39,7 +41,7 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint((req, rsp, e) -> {
                     rsp.resetBuffer();
                     rsp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    rsp.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+                    rsp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
                     rsp.getOutputStream().print(objectMapper.writeValueAsString(dto));
                     rsp.flushBuffer();
                 })

@@ -1,6 +1,5 @@
 package tr.com.kafein.dashboard.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +16,14 @@ import static tr.com.kafein.dashboard.util.RandomUtil.getRandomBetween;
 
 @Service
 public class SalesSummaryService {
+    private final SalesSummaryRepository salesSummaryRepository;
+    private final UserServiceAccessor userServiceAccessor;
 
-    @Autowired
-    private SalesSummaryRepository salesSummaryRepository;
-
-    @Autowired
-    private UserServiceAccessor userServiceAccessor;
+    public SalesSummaryService(SalesSummaryRepository salesSummaryRepository,
+                               UserServiceAccessor userServiceAccessor) {
+        this.salesSummaryRepository = salesSummaryRepository;
+        this.userServiceAccessor = userServiceAccessor;
+    }
 
     public Page<SalesSummary> getSummaries(Integer year, Integer month, SalesCategoryType category, Pageable pageable) {
         SalesSummary filterObject = new SalesSummary();
@@ -31,12 +32,9 @@ public class SalesSummaryService {
         filterObject.setCategory(category);
         Page<SalesSummary> result = salesSummaryRepository.findAll(Example.of(filterObject), pageable);
         if (result.getNumberOfElements() > 0) {
-            final UserDto[] user = {null};
             result.get().forEach(salesSummary -> {
-                if(user[0] == null) {
-                    user[0] = userServiceAccessor.getById(salesSummary.getUserId());
-                }
-                salesSummary.setUser(user[0]);
+                UserDto user = userServiceAccessor.getById(salesSummary.getUserId());
+                salesSummary.setUser(user);
             });
         }
 
@@ -45,11 +43,13 @@ public class SalesSummaryService {
 
     @PostConstruct
     private void createDummySummaries() {
-        UserDto randomUser = userServiceAccessor.getOne();
-        if (salesSummaryRepository.findAll().size() == 0) {
-            for (int i = 1; i < 13; i++) {
-                for (int j = 0; j < 3; j++) {
-                    createDummySummary(randomUser, SalesCategoryType.values()[j], 2020, i);
+        if (salesSummaryRepository.count() == 0) {
+            UserDto randomUser = userServiceAccessor.getOne();
+            if (salesSummaryRepository.findAll().isEmpty()) {
+                for (int i = 1; i < 13; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        createDummySummary(randomUser, SalesCategoryType.values()[j], 2020, i);
+                    }
                 }
             }
         }
@@ -59,7 +59,7 @@ public class SalesSummaryService {
         SalesSummary summary = new SalesSummary();
         summary.setYear(year);
         summary.setMonth(month);
-        summary.setUserId(user.id);
+        summary.setUserId(user.getId());
         summary.setCategory(category);
         summary.setPaidCount(getRandomBetween(1, 50));
         summary.setUnpaidCount(getRandomBetween(1, 50));

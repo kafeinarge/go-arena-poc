@@ -1,15 +1,19 @@
 package tr.com.kafein.userservice.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import tr.com.kafein.userservice.data.User;
 import tr.com.kafein.userservice.service.UserService;
 
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/username/{username}")
     public User findByUsername(@PathVariable String username) {
@@ -22,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    User getById(@PathVariable("id") Long id) {
+    public User getById(@PathVariable("id") Long id) {
         return userService.getById(id);
     }
 }

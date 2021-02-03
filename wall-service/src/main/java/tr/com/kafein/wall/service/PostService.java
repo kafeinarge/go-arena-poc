@@ -1,6 +1,5 @@
 package tr.com.kafein.wall.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,14 +15,19 @@ import tr.com.kafein.wall.type.ApprovalType;
 import java.util.Date;
 import java.util.Optional;
 
+import static tr.com.kafein.wall.util.Constants.ADMIN_PERMISSION_MSG;
+import static tr.com.kafein.wall.util.Constants.POST_NOT_FOUND_MSG;
+
 @Service
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final UserServiceAccessor userServiceAccessor;
 
-    @Autowired
-    private UserServiceAccessor userServiceAccessor;
+    public PostService(PostRepository postRepository, UserServiceAccessor userServiceAccessor) {
+        this.postRepository = postRepository;
+        this.userServiceAccessor = userServiceAccessor;
+    }
 
     public Page<Post> allPageable(Pageable pageable) {
         Page<Post> result = getAllPageable(pageable);
@@ -41,12 +45,9 @@ public class PostService {
 
     private void fillUserFieldsToPostPage(Page<Post> page) {
         if (page.getNumberOfElements() > 0) {
-            final UserDto[] user = {null};
             page.get().forEach(post -> {
-                if (user[0] == null) {
-                    user[0] = userServiceAccessor.getById(post.getUserId());
-                }
-                post.setUser(user[0]);
+                UserDto user = userServiceAccessor.getById(post.getUserId());
+                post.setUser(user);
             });
         }
     }
@@ -60,7 +61,7 @@ public class PostService {
         if (post.isPresent()) {
             return post.get();
         } else {
-            throw new NotFoundException("Post id :[" + id + "] bulunamadı");
+            throw new NotFoundException(String.format(POST_NOT_FOUND_MSG, id));
         }
     }
 
@@ -70,26 +71,28 @@ public class PostService {
         entity.setCreationDate(real.getCreationDate());
         entity.setUserId(real.getUserId());
         entity.setApproval(real.getApproval());
-        if (entity.getPreview() == null) {
+        if (entity.getPreview() != null) {
             entity.setPreview(real.getPreview());
         }
         return postRepository.save(entity);
     }
 
     public Post upload(String preview, String text) {
-        Post post = new Post();
-        post.setPreview(preview);
-        post.setText(text);
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        post.setUserId(userServiceAccessor.findByUsername(username).getId());
-        post.setCreationDate(new Date());
-        post.setApproval(ApprovalType.WAITING);
+        Long userId = userServiceAccessor.findByUsername(username).getId();
+        Post post = Post.builder()
+                .preview(preview)
+                .text(text)
+                .userId(userId)
+                .creationDate(new Date())
+                .approval(ApprovalType.WAITING)
+                .build();
         return postRepository.save(post);
     }
 
     public Post updateApprovalStatus(Long id, ApprovalType approvalType) {
         if (!isAdminSession()) {
-            throw new InternalServerError("Bu işlemi sadece adminler gerçekleştirebilir");
+            throw new InternalServerError(ADMIN_PERMISSION_MSG);
         }
         Post post = getById(id);
         post.setApproval(approvalType);

@@ -5,7 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
+public final class DateUtil {
+
+    private DateUtil() {
+        throw new IllegalStateException("Utils class.");
+    }
 
     /**
      * Returns n'th day starting from today.

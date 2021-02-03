@@ -3,6 +3,7 @@ package tr.com.kafein.uaaserver.dto;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SecurityUser extends User {
 
@@ -45,4 +46,18 @@ public class SecurityUser extends User {
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SecurityUser that = (SecurityUser) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, name);
+    }
 }

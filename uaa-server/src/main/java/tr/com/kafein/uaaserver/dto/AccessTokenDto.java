@@ -1,7 +1,14 @@
 package tr.com.kafein.uaaserver.dto;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@Data
+@ToString
+@EqualsAndHashCode
 public class AccessTokenDto {
-    public String token;
-    public String expireDate;
-    public Long userId;
+    private String token;
+    private String expireDate;
+    private Long userId;
 }
