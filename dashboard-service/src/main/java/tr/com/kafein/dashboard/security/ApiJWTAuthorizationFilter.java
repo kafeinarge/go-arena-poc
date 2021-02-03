@@ -1,6 +1,5 @@
 package tr.com.kafein.dashboard.security;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -59,7 +58,6 @@ public class ApiJWTAuthorizationFilter extends BasicAuthenticationFilter {
             res.resetBuffer();
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-            objectMapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
             res.getOutputStream().print(objectMapper.writeValueAsString(dto));
             res.flushBuffer();
         }

@@ -1,6 +1,5 @@
 package tr.com.kafein.dashboard.security;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +19,8 @@ import tr.com.kafein.dashboard.dto.ErrorDto;
 
 import javax.servlet.http.HttpServletResponse;
 
+import static tr.com.kafein.dashboard.util.Constants.MUST_BE_LOGIN;
+
 @EnableFeignClients
 @Configuration
 @EnableWebSecurity
@@ -30,11 +31,11 @@ public class MultiHttpSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        ErrorDto dto = new ErrorDto();
-        dto.setResultCode(401);
-        dto.setResult(HttpStatus.UNAUTHORIZED.name());
-        dto.setErrorMessage("Lütfen Giris Yapınız");
-        objectMapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
+        ErrorDto dto = ErrorDto.builder()
+                .resultCode(HttpStatus.UNAUTHORIZED.value())
+                .result(HttpStatus.UNAUTHORIZED.name())
+                .errorMessage(MUST_BE_LOGIN)
+                .build();
 
         http.csrf().disable()
                 .antMatcher("/**").authorizeRequests()

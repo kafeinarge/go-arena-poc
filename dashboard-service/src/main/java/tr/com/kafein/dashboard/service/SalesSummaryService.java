@@ -57,7 +57,7 @@ public class SalesSummaryService {
         SalesSummary summary = new SalesSummary();
         summary.setYear(year);
         summary.setMonth(month);
-        summary.setUserId(user.id);
+        summary.setUserId(user.getId());
         summary.setCategory(category);
         summary.setPaidCount(getRandomBetween(1, 50));
         summary.setUnpaidCount(getRandomBetween(1, 50));
