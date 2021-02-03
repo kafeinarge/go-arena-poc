@@ -16,8 +16,7 @@ import java.util.Objects;
 @Component
 public class FeignClientInterceptor implements RequestInterceptor {
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_TOKEN_TYPE = "Bearer";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
     public void apply(RequestTemplate template) {

@@ -12,4 +12,9 @@ public final class Constants {
     public static final String TOKEN_PREFIX = "Bearer ";
 
     public static final String SESSION_EXPIRE_MSG = "Oturumunuzun süresi dolmuş, lütfen tekrar giriş yapınız";
+    public static final String TYPE_MISMATCH_MSG = "Bu endpoint için %s değeri '%s' gönderilmiştir ancak beklenilen tip %s dır;";
+    public static final String POST_NOT_FOUND_MSG = "Post id :[ %s ] bulunamadı";
+    public static final String ADMIN_PERMISSION_MSG = "Bu işlemi sadece adminler gerçekleştirebilir";
+    public static final String IMAGE_NOT_FOUND_MSG = "Resim Bulunamadı";
+    public static final String IMAGE_NOT_READABLE = "Resim okunurken hata meydana geldi";
 }

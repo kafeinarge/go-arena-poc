@@ -241,6 +241,7 @@
 						<exclude>tr/com/kafein/wall/WallServiceApplication.class</exclude>
 						<exclude>tr/com/kafein/wall/accessor/*</exclude>
 						<exclude>tr/com/kafein/wall/data/*</exclude>
+						<exclude>tr/com/kafein/wall/dto/*</exclude>
 						<exclude>tr/com/kafein/wall/repository/*</exclude>
 						<exclude>tr/com/kafein/wall/mapper/*</exclude>
 						<exclude>tr/com/kafein/wall/type/*</exclude>

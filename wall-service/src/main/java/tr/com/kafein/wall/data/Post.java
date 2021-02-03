@@ -1,11 +1,21 @@
 package tr.com.kafein.wall.data;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import tr.com.kafein.wall.dto.UserDto;
 import tr.com.kafein.wall.type.ApprovalType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 @Entity
 @Table(name = "post", schema = "wallservice")
 public class Post {
@@ -30,59 +40,16 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private ApprovalType approval;
 
-    public Long getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
-    }
-
-    public String getPreview() {
-        return preview;
-    }
-
-    public void setPreview(String preview) {
-        this.preview = preview;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public ApprovalType getApproval() {
-        return approval;
-    }
-
-    public void setApproval(ApprovalType approval) {
-        this.approval = approval;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
