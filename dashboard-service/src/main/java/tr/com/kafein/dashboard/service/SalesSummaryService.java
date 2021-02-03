@@ -43,11 +43,13 @@ public class SalesSummaryService {
 
     @PostConstruct
     private void createDummySummaries() {
-        UserDto randomUser = userServiceAccessor.getOne();
-        if (salesSummaryRepository.findAll().isEmpty()) {
-            for (int i = 1; i < 13; i++) {
-                for (int j = 0; j < 3; j++) {
-                    createDummySummary(randomUser, SalesCategoryType.values()[j], 2020, i);
+        if (salesSummaryRepository.count() == 0) {
+            UserDto randomUser = userServiceAccessor.getOne();
+            if (salesSummaryRepository.findAll().isEmpty()) {
+                for (int i = 1; i < 13; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        createDummySummary(randomUser, SalesCategoryType.values()[j], 2020, i);
+                    }
                 }
             }
         }
