@@ -72,7 +72,7 @@ class PostServiceTest {
 
         Page page = new PageImpl(posts);
 
-        when(mockRepository.findAll(mockPageable)).thenReturn(page);
+        when(mockRepository.findAllByApproval(ApprovalType.WAITING, mockPageable)).thenReturn(page);
         when(mockUserAccessor.getById(post1.getUserId())).thenReturn(user1);
         when(mockUserAccessor.getById(post2.getUserId())).thenReturn(user2);
 
